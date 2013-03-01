@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Norbert Crombach"]
   s.email       = ["norbert.crombach@primetheory.org"]
   s.homepage    = "http://github.com/norbert/vivaldi"
-  s.summary     = %q{Consolidated metrics for Ruby/Rails applications.}
+  s.summary     = %q{Consolidated metrics for Ruby/Rack/Rails applications.}
 
   s.rubyforge_project = "vivaldi"
 
@@ -15,8 +15,9 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'mocha'
-  s.add_development_dependency 'rails', '~> 3.2'
-  s.add_development_dependency 'statsd-ruby'
   s.add_development_dependency 'logging'
+  s.add_development_dependency 'activesupport', '~> 3.2'
+  s.add_development_dependency 'activerecord', '~> 3.2'
   s.add_development_dependency 'rack-statsd'
+  s.add_development_dependency 'statsd-ruby'
 end
