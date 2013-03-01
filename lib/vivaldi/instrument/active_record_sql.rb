@@ -3,42 +3,60 @@ require 'vivaldi/instrument/active_support_notifications'
 module Vivaldi
   module Instrument
     class ActiveRecordSQL < ActiveSupportNotifications
-      SOURCE_NAME = "sql.active_record"
+      include Instrument::KeyPrefix
 
-      QUERY_ESCAPE_REGEXP = /`|"|.{0}/
-      QUERY_TABLE_REGEXP = /(#{QUERY_ESCAPE_REGEXP}(\w+)#{QUERY_ESCAPE_REGEXP})/
+      SOURCE_NAME = "sql.active_record"
+      KEY_PREFIX = "active_record.sql"
+
+      QUERY_ESCAPE_REGEXP = /`|"/
+      QUERY_TABLE_REGEXP = /#{QUERY_ESCAPE_REGEXP}(\w+)#{QUERY_ESCAPE_REGEXP}/
       QUERY_SELECT_DELETE_REGEXP = / FROM #{QUERY_TABLE_REGEXP}/
       QUERY_INSERT_REGEXP = /^INSERT INTO #{QUERY_TABLE_REGEXP}/
       QUERY_UPDATE_REGEXP = /^UPDATE #{QUERY_TABLE_REGEXP}/
 
-      def initialize
+      def initialize(key_prefix = nil)
         super(SOURCE_NAME)
+        self.key_prefix = key_prefix || KEY_PREFIX
       end
 
       def play(event)
         payload = event.payload
+
         case payload[:sql]
         when /^SELECT/
-          increment 'sql.select'
+          increment :select
           if payload[:sql] =~ QUERY_SELECT_DELETE_REGEXP
-            timing "sql.#{$2}.select.query_time"
+            timing :select, $1
           end
         when /^INSERT/
-          increment 'sql.insert'
+          increment :insert
           if payload[:sql] =~ QUERY_INSERT_REGEXP
-            timing "sql.#{$2}.insert.query_time"
+            timing :insert, $1
           end
         when /^UPDATE/
-          increment 'sql.update'
+          increment :update
           if payload[:sql] =~ QUERY_UPDATE_REGEXP
-            timing "sql.#{$2}.update.query_time"
+            timing :update, $1
           end
         when /^DELETE/
-          increment 'sql.delete'
+          increment :delete
           if payload[:sql] =~ QUERY_SELECT_DELETE_REGEXP
-            timing "sql.#{$2}.delete.query_time"
+            timing :delete, $1
           end
+        else
+          increment :query
         end
+
+        event
+      end
+
+      def timing(type, table)
+        key = "#{table}.#{type}.query_time"
+        super(key)
+      end
+
+      def register(*args)
+        super
       end
     end
 
