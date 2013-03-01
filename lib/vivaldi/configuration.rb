@@ -1,5 +1,7 @@
 module Vivaldi
   class Configuration
+    SECTIONS = [:rack, :rails]
+
     attr_reader :instruments, :listeners
 
     def initialize
@@ -49,6 +51,14 @@ module Vivaldi
 
       @listeners << listener
       listener
+    end
+
+    def section(name)
+      if !SECTIONS.include?(name)
+        raise ArgumentError, "unknown section: #{name.inspect}"
+      end
+
+      require "vivaldi/section/#{name}"
     end
   end
 
