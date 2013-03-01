@@ -1,4 +1,4 @@
-require 'vivaldi/instrument/activesupport'
+require 'vivaldi/instrument/active_support_notifications'
 
 module Vivaldi
   module Instrument
@@ -42,6 +42,6 @@ module Vivaldi
       end
     end
 
-    score :activerecord_sql, ActiveRecordSQL
+    score :active_record_sql, ActiveRecordSQL
   end
 end

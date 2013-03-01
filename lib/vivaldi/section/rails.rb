@@ -1,2 +1,2 @@
-require 'vivaldi/instrument/activesupport'
-require 'vivaldi/instrument/activerecord_sql'
+require 'vivaldi/instrument/active_support_notifications'
+require 'vivaldi/instrument/active_record_sql'

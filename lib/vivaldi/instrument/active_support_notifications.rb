@@ -57,6 +57,6 @@ module Vivaldi
       end
     end
 
-    score :activesupport, ActiveSupportNotifications
+    score :active_support, ActiveSupportNotifications
   end
 end
