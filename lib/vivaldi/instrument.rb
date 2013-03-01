@@ -20,23 +20,32 @@ module Vivaldi
 
     extend self
 
-    def increment(key, value = nil, option = nil)
-      value ||= 1
-      note = Note.new(:increment, key, value, option)
-      register(note)
+    def count(key, value, rate = nil)
+      register(:count, key, value, rate)
     end
 
-    def gauge(key, value, option = nil)
-      note = Note.new(:gauge, key, value, option)
-      register(note)
+    def increment(key, rate = nil)
+      count(key, 1, rate)
     end
 
-    def timing(key, value, option = nil)
-      note = Note.new(:timing, key, value, option)
-      register(note)
+    def decrement(key, rate = nil)
+      count(key, -1, rate)
     end
 
-    def register(note)
+    def gauge(key, value, rate = nil)
+      register(:gauge, key, value, rate)
+    end
+
+    def timing(key, value, rate = nil)
+      register(:timing, key, Float(value).round, rate)
+    end
+
+    def set(key, value, rate = nil)
+      register(:set, key, value, rate)
+    end
+
+    def register(type, key, value, rate = nil)
+      note = Note.new(type, key, value, rate)
       Conductor.observe(note)
     end
   end

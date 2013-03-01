@@ -1,6 +1,6 @@
 module Vivaldi
   class Note < Struct.new(:type, :key, :value, :option)
-    TYPES = [:increment, :timing, :gauge]
+    TYPES = [:count, :gauge, :timing, :set]
 
     def initialize(type, key, value, option = nil)
       if TYPES.include?(type)
@@ -14,9 +14,9 @@ module Vivaldi
     end
 
     def arguments
-      list = [key, value]
-      list.push(option) if !option.nil?
-      list
+      return @arguments if @arguments
+      @arguments = [key, value]
+      option.nil? ? @arguments : @arguments.push(option)
     end
   end
 end
