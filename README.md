@@ -34,4 +34,6 @@ $vivaldi = Vivaldi::Instrument
 ## References
 
 * [Antonio Lucio Vivaldi](http://en.wikipedia.org/wiki/Antonio_Vivaldi)
-* [Recomposed by Max Richter: Vivaldi, The Four Seasons](http://open.spotify.com/album/4UPS24Q2suxDzPkrxP6PAj)
+* [Max Richter: Vivaldi, The Four Seasons](http://open.spotify.com/album/4UPS24Q2suxDzPkrxP6PAj)
+
+* [Using Statsd with Rails](http://www.mikeperham.com/2012/08/25/using-statsd-with-rails/)
